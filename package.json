@@ -1,0 +1,15 @@
+{
+  "name": "clipper-file-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@flmngr/flmngr-server-node-express": "^1.5.3",
+    "flmngr": "^2.0.19"
+  }
+}
