@@ -9,6 +9,10 @@ const app = express();
 // Parse JSON bodies
 app.use(express.json());
 
+// Parse JSON bodies
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ limit: '500mb', extended: true }));
+
 // Serve static files
 app.use(express.static('test'));
 
@@ -44,9 +48,13 @@ const storage = multer.diskStorage({
     }
 });
 
+// Find this section and update it:
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 100 * 1024 * 1024 }
+    limits: {
+        fileSize: 500 * 1024 * 1024, // Increased to 500MB (was 100MB)
+        fieldSize: 50 * 1024 * 1024  // Add field size limit
+    }
 });
 
 // Authentication middleware
