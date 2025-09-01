@@ -94,6 +94,94 @@ app.post('/upload', authenticateToken, upload.single('file'), (req, res) => {
     }
 });
 
+// Delete endpoint (DELETE method)
+app.delete('/delete', authenticateToken, (req, res) => {
+    try {
+        const { filename } = req.body;
+
+        if (!filename) {
+            return res.status(400).json({ error: 'Filename is required' });
+        }
+
+        // Construct the full file path
+        const filePath = path.join(uploadDir, filename);
+
+        // Security check: ensure the file path is within the upload directory
+        const resolvedPath = path.resolve(filePath);
+        const resolvedUploadDir = path.resolve(uploadDir);
+
+        if (!resolvedPath.startsWith(resolvedUploadDir)) {
+            return res.status(403).json({ error: 'Access denied: Invalid file path' });
+        }
+
+        // Check if file exists
+        if (!fs.existsSync(resolvedPath)) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        // Delete the file
+        fs.unlinkSync(resolvedPath);
+
+        console.log(`🗑️ File deleted: ${filename}`);
+
+        res.json({
+            success: true,
+            message: 'File deleted successfully',
+            filename: filename
+        });
+
+    } catch (error) {
+        console.error('❌ Delete error:', error);
+        res.status(500).json({ error: 'Delete failed', message: error.message });
+    }
+});
+
+// POST version of delete endpoint for compatibility
+app.post('/delete', authenticateToken, (req, res) => {
+    try {
+        const { filename, action } = req.body;
+
+        if (!filename) {
+            return res.status(400).json({ error: 'Filename is required' });
+        }
+
+        if (action !== 'delete') {
+            return res.status(400).json({ error: 'Invalid action. Use action: "delete"' });
+        }
+
+        // Construct the full file path
+        const filePath = path.join(uploadDir, filename);
+
+        // Security check: ensure the file path is within the upload directory
+        const resolvedPath = path.resolve(filePath);
+        const resolvedUploadDir = path.resolve(uploadDir);
+
+        if (!resolvedPath.startsWith(resolvedUploadDir)) {
+            return res.status(403).json({ error: 'Access denied: Invalid file path' });
+        }
+
+        // Check if file exists
+        if (!fs.existsSync(resolvedPath)) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        // Delete the file
+        fs.unlinkSync(resolvedPath);
+
+        console.log(`🗑️ File deleted: ${filename}`);
+
+        res.json({
+            success: true,
+            message: 'File deleted successfully',
+            filename: filename
+        });
+
+    } catch (error) {
+        console.error('❌ Delete error:', error);
+        res.status(500).json({ error: 'Delete failed', message: error.message });
+    }
+});
+
 // Health check
 app.get('/health', (req, res) => {
     res.json({
