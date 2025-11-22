@@ -10,45 +10,90 @@
 <base href="./">
 </head>
 
-<body style="padding: 20px">
-    <h2>Express File Manager demo</h2>
-    <a href="https://flmngr.com/doc/samples">More samples</a> with live CodePen demos.
+<body style="padding: 0; margin: 0; background: linear-gradient(113deg, #000 0%, #3930a8 100%); min-height: 100vh; color: #e0e0e0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="color: #ffffff; font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 0 20px rgba(240, 226, 36, 0.3);">Express File Manager</h2>
+            <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 20px;">Powerful file management for your applications</p>
+        </div>
 
-    <div style="margin-top:50px">
-        <div id="btn" class="btn btn-primary" style="opacity:0.2;cursor:default">Select image</div>
-        <div id="loading" style="font-size:12px">Loading file manager...</div>
+        <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="margin-bottom: 30px;">
+                <div id="btn" class="btn btn-primary" style="opacity:0.2;cursor:default; background: linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(165, 116, 215) 100%); border: none; padding: 15px 40px; font-size: 1.1rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">Select Image</div>
+                <div id="loading" style="font-size:14px; color: #ffffff; margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 16px; height: 16px; border: 3px solid rgba(0, 217, 255, 0.3); border-top-color: #00d9ff; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+                    Loading file manager...
+                </div>
+            </div>
 
-        <h2 class="h5 mt-5">Selected image</h2>
-        <div id="images">
-            No image selected yet.
+            <div style="margin-top: 40px;">
+                <h2 style="color: #00d9ff; font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid rgba(0, 217, 255, 0.3); padding-bottom: 10px;">📁 Selected Images</h2>
+                <div id="images" style="color: #94a3b8; font-style: italic;">
+                    No image selected yet.
+                </div>
+            </div>
         </div>
     </div>
 
     <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #btn:not([style*="opacity:0.2"]) {
+            opacity: 1 !important;
+            cursor: pointer !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+        }
+
+        #btn:not([style*="opacity:0.2"]):hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.8) !important;
+        }
+
+        #btn:not([style*="opacity:0.2"]):active {
+            transform: translateY(-1px);
+        }
+
         #images .image {
-            border: 1px solid #DDD;
-            box-shadow: 5px 5px 0 0 #DDD;
-            background-color: white;
-            padding: 10px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            padding: 15px;
             display: inline-flex;
             flex-direction: column;
             margin: 0 25px 25px 0;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        #images .image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 217, 255, 0.3);
+            border-color: #00d9ff;
         }
 
         #images .image img {
             max-height: 250px;
             cursor: pointer;
-            border: 2px solid #007FFF;
+            border: 2px solid #00d9ff;
+            border-radius: 10px;
+            transition: all 0.3s;
         }
 
         #images .image img:hover {
-            border-color: orange;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+            transform: scale(1.02);
         }
 
         #images .image p {
-            margin: 5px 0 0 0;
+            margin: 10px 0 0 0;
             font-size: 14px;
-            color: #444;
+            color: #e0e0e0;
+            text-align: center;
         }
 
         .lum-img {
@@ -77,14 +122,36 @@
         }
 
         .lum-lightbox-image-wrapper {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.9);
         }
 
         .hint {
-            color: #007FFF;
+            color: #00d9ff;
             font-size: 14px;
             margin-top: 10px;
             line-height: 16px;
+        }
+
+        a {
+            transition: all 0.3s;
+        }
+
+        /* Scrollbar styling for dark theme */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 217, 255, 0.5);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00d9ff;
         }
     </style>
 </body>
