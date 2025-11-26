@@ -9,144 +9,847 @@
 <script type="module" src="/flmngr-example.js"></script>
 <base href="./">
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-<body style="padding: 0; margin: 0; background: linear-gradient(113deg, #000 0%, #3930a8 100%); min-height: 100vh; color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
-        <div style="text-align: center; margin-bottom: 50px;">
-            <h2 style="color: #ffffff; font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 0 20px rgba(240, 226, 36, 0.3);">Express File Manager</h2>
-            <p style="color: #94a3b8; font-size: 1.1rem; margin-bottom: 20px;">Powerful file management for your applications</p>
+    :root {
+        --bg-primary: #0a0a0a;
+        --bg-secondary: #141414;
+        --bg-tertiary: #1a1a1a;
+        --border-color: #262626;
+        --text-primary: #fafafa;
+        --text-secondary: #a1a1a1;
+        --text-muted: #737373;
+        --accent: #3b82f6;
+        --green: #22c55e;
+    }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        min-height: 100vh;
+    }
+
+    /* Navigation */
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.8);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 100;
+    }
+
+    .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+        font-size: 1.125rem;
+        color: var(--text-primary);
+        text-decoration: none;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--accent);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+    }
+
+    .nav-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+        color: var(--text-primary);
+    }
+
+    .nav-btn {
+        background: var(--text-primary);
+        color: var(--bg-primary);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: opacity 0.2s;
+    }
+
+    .nav-btn:hover {
+        opacity: 0.9;
+    }
+
+    /* Hero Section */
+    .hero {
+        padding: 10rem 2rem 6rem;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        padding: 0.375rem 0.875rem;
+        border-radius: 100px;
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+    }
+
+    .badge-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--green);
+        border-radius: 50%;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-description {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary {
+        background: var(--text-primary);
+        color: var(--bg-primary);
+        padding: 0.875rem 1.75rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: opacity 0.2s;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: var(--text-primary);
+        padding: 0.875rem 1.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+        background: var(--bg-secondary);
+        border-color: #333;
+    }
+
+    /* Tech Stack */
+    .tech-stack {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .tech-badge {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Features Section */
+    .features {
+        padding: 6rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .section-label {
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.75rem;
+    }
+
+    h2 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 1rem;
+    }
+
+    .section-description {
+        color: var(--text-secondary);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .feature-card {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.75rem;
+        transition: border-color 0.2s;
+    }
+
+    .feature-card:hover {
+        border-color: #333;
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .feature-icon svg {
+        width: 20px;
+        height: 20px;
+        color: var(--text-secondary);
+    }
+
+    .feature-card h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* Installation Section */
+    .installation {
+        padding: 6rem 2rem;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .installation-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .code-block {
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-top: 2rem;
+        overflow: hidden;
+    }
+
+    .code-header {
+        background: var(--bg-tertiary);
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .code-dots {
+        display: flex;
+        gap: 6px;
+    }
+
+    .code-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--border-color);
+    }
+
+    .code-title {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .code-content {
+        padding: 1.25rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875rem;
+        line-height: 1.8;
+        overflow-x: auto;
+    }
+
+    .code-content .comment {
+        color: var(--text-muted);
+    }
+
+    .code-content .command {
+        color: var(--green);
+    }
+
+    .code-content .prompt {
+        color: var(--text-muted);
+        user-select: none;
+    }
+
+    /* Project Structure */
+    .structure {
+        padding: 6rem 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .structure-tree {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-top: 2rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875rem;
+    }
+
+    .tree-item {
+        padding: 0.375rem 0;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .tree-item.folder {
+        color: var(--accent);
+    }
+
+    .tree-indent {
+        padding-left: 1.5rem;
+    }
+
+    .tree-desc {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        margin-left: auto;
+    }
+
+    /* API Section */
+    .api {
+        padding: 6rem 2rem;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .api-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .api-table {
+        width: 100%;
+        margin-top: 2rem;
+        border-collapse: collapse;
+    }
+
+    .api-table th,
+    .api-table td {
+        text-align: left;
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .api-table th {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .api-table td {
+        font-size: 0.875rem;
+    }
+
+    .api-method {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+
+    .api-method.get {
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--green);
+    }
+
+    .api-method.post {
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--accent);
+    }
+
+    .api-endpoint {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text-primary);
+    }
+
+    .api-desc {
+        color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+        padding: 4rem 2rem;
+        text-align: center;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .footer-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+        color: var(--text-primary);
+    }
+
+    .footer-credit {
+        color: var(--text-muted);
+        font-size: 0.8125rem;
+    }
+
+    .footer-credit a {
+        color: var(--text-secondary);
+        text-decoration: none;
+    }
+
+    .footer-credit a:hover {
+        color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero {
+            padding: 8rem 1.5rem 4rem;
+        }
+
+        .features,
+        .installation,
+        .structure,
+        .api {
+            padding: 4rem 1.5rem;
+        }
+
+        .tree-desc {
+            display: none;
+        }
+    }
+</style>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="/file-server" class="logo">
+                <div class="logo-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
+                </div>
+                File Server
+            </a>
+            <!-- <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#api">API</a></li>
+                <li><a href="#structure">Structure</a></li>
+            </ul> -->
+            <a href="https://github.com/kuldeep-jadeja/clipper-file-server" class="nav-btn" target="_blank">GitHub</a>
         </div>
+    </nav>
 
-        <div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge">
+            <span class="badge-dot"></span>
+            v1.0 Available Now
+        </div>
+        <h1>Clipper File Server</h1>
+        <p class="hero-description">
+            A powerful and elegant Node.js file server powered by Express and Flmngr for seamless file management.
+        </p>
+        <div class="hero-buttons">
             <div>
-                <div id="btn" class="btn btn-primary" style="opacity:0.2;display: flex; align-items: center; justify-content: center; cursor:pointer; height: 200px; background: linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(165, 116, 215) 100%); border: none; padding: 15px 40px; font-size: 1.1rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">Upload Here</div>
-                <div id="loading" style="font-size:14px; color: #ffffff; margin-top: 15px; display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 16px; height: 16px; border: 3px solid rgba(0, 217, 255, 0.3); border-top-color: #00d9ff; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+                <div id="btn" class="btn btn-primary">Upload Here</div>
+                <div id="loading">
+                    <span></span>
                     Loading file manager...
                 </div>
             </div>
+            <a href="https://github.com/kuldeep-jadeja/clipper-file-server" class="btn-secondary" target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                </svg>
+                View on GitHub
+            </a>
         </div>
-    </div>
+        <div class="tech-stack">
+            <span class="tech-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#68a063">
+                    <path
+                        d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z" />
+                </svg>
+                Node.js
+            </span>
+            <span class="tech-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff">
+                    <path
+                        d="M24 18.588a1.529 1.529 0 01-1.895-.72l-3.45-4.771-.5-.667-4.003 5.444a1.466 1.466 0 01-1.802.708l5.158-6.92-4.798-6.251a1.595 1.595 0 011.9.666l3.576 4.83 3.596-4.81a1.435 1.435 0 011.788-.668L21.708 7.9l-2.522 3.283a.666.666 0 000 .994l4.804 6.412zM.002 11.576l.42-2.075c1.154-4.103 5.858-5.81 9.094-3.27 1.895 1.489 2.368 3.597 2.275 5.973H1.116C.943 16.447 4.005 19.009 7.92 17.7a4.078 4.078 0 002.582-2.876c.207-.666.548-.78 1.174-.588a5.417 5.417 0 01-2.589 3.957 6.272 6.272 0 01-7.306-.933 6.575 6.575 0 01-1.64-3.858c0-.235-.08-.455-.134-.666A88.33 88.33 0 010 11.577zm1.127-.286h9.654c-.06-3.076-2.001-5.258-4.59-5.278-2.882-.04-4.944 2.094-5.071 5.264z" />
+                </svg>
+                Express.js
+            </span>
+            <span class="tech-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2" />
+                    <line x1="9" y1="3" x2="9" y2="21" />
+                </svg>
+                Flmngr
+            </span>
+            <span class="tech-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+                ISC License
+            </span>
+        </div>
+    </section>
 
-    <style>
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <p class="section-label">Features</p>
+            <h2>Everything you need</h2>
+            <p class="section-description">
+                A complete file management solution with an intuitive interface and powerful capabilities.
+            </p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </div>
+                <h3>Effortless File Uploads</h3>
+                <p>Drag and drop files with ease. Support for multiple file types and batch uploads.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+                <h3>Smart File Organization</h3>
+                <p>Browse, organize, and manage your files intuitively with folder support.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                </div>
+                <h3>Rich UI Experience</h3>
+                <p>Beautiful, responsive file manager interface powered by Flmngr library.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h3>Express.js Foundation</h3>
+                <p>Built on the rock-solid Express.js framework for reliability and performance.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3>Zero-Config Setup</h3>
+                <p>Get up and running in minutes with minimal configuration required.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                </div>
+                <h3>Responsive Design</h3>
+                <p>Access your files from any device with a fully responsive interface.</p>
+            </div>
+        </div>
+    </section>
 
-        #btn:not([style*="opacity:0.2"]) {
-            opacity: 1 !important;
-            cursor: pointer !important;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
-        }
+    <!-- Installation Section -->
+    <section class="installation" id="installation">
+        <div class="installation-content">
+            <div class="section-header">
+                <p class="section-label">Getting Started</p>
+                <h2>Quick Installation</h2>
+                <p class="section-description">
+                    Get your file server running in just a few commands.
+                </p>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <span class="code-dot"></span>
+                        <span class="code-dot"></span>
+                        <span class="code-dot"></span>
+                    </div>
+                    <span class="code-title">terminal</span>
+                </div>
+                <div class="code-content">
+                    <span class="comment"># Clone the repository</span><br>
+                    <span class="prompt">$ </span><span class="command">git clone
+                        https://github.com/kuldeep-jadeja/clipper-file-server.git</span><br>
+                    <span class="prompt">$ </span><span class="command">cd clipper-file-server</span><br><br>
+                    <span class="comment"># Install dependencies</span><br>
+                    <span class="prompt">$ </span><span class="command">npm install</span><br><br>
+                    <span class="comment"># Start the server</span><br>
+                    <span class="prompt">$ </span><span class="command">node app.js</span><br><br>
+                    <span class="comment"># Server running at http://localhost:3041</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        #btn:not([style*="opacity:0.2"]):hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.8) !important;
-        }
+    <!-- Project Structure -->
+    <section class="structure" id="structure">
+        <div class="section-header">
+            <p class="section-label">Architecture</p>
+            <h2>Project Structure</h2>
+            <p class="section-description">
+                Clean and organized file structure for easy navigation.
+            </p>
+        </div>
+        <div class="structure-tree">
+            <div class="tree-item folder">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                clipper-file-server/
+            </div>
+            <div class="tree-item file tree-indent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                app.js
+                <span class="tree-desc">Main server application</span>
+            </div>
+            <div class="tree-item file tree-indent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                package.json
+                <span class="tree-desc">Project metadata</span>
+            </div>
+            <div class="tree-item file tree-indent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                README.md
+                <span class="tree-desc">Documentation</span>
+            </div>
+            <div class="tree-item folder tree-indent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                public/upload/
+                <span class="tree-desc">File storage directory</span>
+            </div>
+            <div class="tree-item folder tree-indent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                test/
+                <span class="tree-desc">Demo files</span>
+            </div>
+        </div>
+    </section>
 
-        #btn:not([style*="opacity:0.2"]):active {
-            transform: translateY(-1px);
-        }
+    <!-- API Section -->
+    <section class="api" id="api">
+        <div class="api-content">
+            <div class="section-header">
+                <p class="section-label">Endpoints</p>
+                <h2>API Reference</h2>
+                <p class="section-description">
+                    Simple and intuitive API endpoints for file operations.
+                </p>
+            </div>
+            <table class="api-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="api-method get">GET</span></td>
+                        <td class="api-endpoint">/</td>
+                        <td class="api-desc">Welcome message</td>
+                    </tr>
+                    <tr>
+                        <td><span class="api-method get">GET</span></td>
+                        <td class="api-endpoint">/file-server</td>
+                        <td class="api-desc">File manager interface</td>
+                    </tr>
+                    <tr>
+                        <td><span class="api-method post">POST</span></td>
+                        <td class="api-endpoint">/flmngr</td>
+                        <td class="api-desc">File management operations</td>
+                    </tr>
+                    <tr>
+                        <td><span class="api-method get">GET</span></td>
+                        <td class="api-endpoint">/files/*</td>
+                        <td class="api-desc">Access uploaded files</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-        #images .image {
-            border: 1px solid rgba(0, 217, 255, 0.3);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            display: inline-flex;
-            flex-direction: column;
-            margin: 0 25px 25px 0;
-            border-radius: 15px;
-            transition: all 0.3s;
-        }
-
-        #images .image:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(0, 217, 255, 0.3);
-            border-color: #00d9ff;
-        }
-
-        #images .image img {
-            max-height: 250px;
-            cursor: pointer;
-            border: 2px solid #00d9ff;
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        #images .image img:hover {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-            transform: scale(1.02);
-        }
-
-        #images .image p {
-            margin: 10px 0 0 0;
-            font-size: 14px;
-            color: #000000;
-            text-align: center;
-        }
-
-        .lum-img {
-            cursor: zoom-out;
-            max-width: 100vw !important;
-            max-height: 100vh !important;
-        }
-
-        .lum-lightbox {
-            z-index: 1000;
-            cursor: zoom-out;
-        }
-
-        .lum-lightbox-inner img {
-            margin: 0 auto;
-        }
-
-        .lum-lightbox-image-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lum-close-button {
-            cursor: pointer;
-        }
-
-        .lum-lightbox-image-wrapper {
-            background: rgba(0, 0, 0, 0.9);
-        }
-
-        .hint {
-            color: #00d9ff;
-            font-size: 14px;
-            margin-top: 10px;
-            line-height: 16px;
-        }
-
-        a {
-            transition: all 0.3s;
-        }
-
-        /* Scrollbar styling for dark theme */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 217, 255, 0.5);
-            border-radius: 6px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00d9ff;
-        }
-    </style>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/kuldeep-jadeja/clipper-file-server" target="_blank">GitHub</a>
+            <a href="https://github.com/kuldeep-jadeja/clipper-file-server/issues" target="_blank">Report Issue</a>
+            <a href="https://github.com/kuldeep-jadeja/clipper-file-server/discussions" target="_blank">Discussions</a>
+            <a href="https://expressjs.com/" target="_blank">Express.js</a>
+            <a href="https://flmngr.com/" target="_blank">Flmngr</a>
+        </div>
+        <p class="footer-credit">
+            Made by <a href="https://github.com/kuldeep-jadeja" target="_blank">Kuldeep Jadeja ❤️</a> · Licensed under
+            ISC
+        </p>
+    </footer>
 </body>
 
 </html>
