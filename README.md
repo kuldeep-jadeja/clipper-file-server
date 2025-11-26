@@ -5,7 +5,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)](https://expressjs.com/)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge)](https://opensource.org/licenses/ISC)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-blue?style=flat-square)](https://files.kuldeepjadeja.dev/file-server)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-blue?style=for-the-badge)](https://files.kuldeepjadeja.dev/file-server)
 
 ## 📖 Description
 
@@ -208,4 +208,5 @@ Having issues or questions? We're here to help!
 Made with ❤️ by [Kuldeep Jadeja](https://github.com/kuldeep-jadeja)
 
 </div>
+
 
